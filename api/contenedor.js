@@ -24,7 +24,7 @@ module.exports =  class contenedor{
             .then(()=> console.log('datos insertados'))
             .catch((err)=>{ console.log(err);  throw err})
             .finally(()=>{
-                knex.destroy()
+               //knex.destroy()
           })            
   
         let data = 'ok'
@@ -34,52 +34,11 @@ module.exports =  class contenedor{
      
 
     //getAll(): Object[] - Devuelve un array con los objetos presentes en el archivo.
-    getAll(){ 
-        let data = []
-        let row
-        knex.from('products').select('*')
-        .then((rows)=> {
-            data = JSON.stringify(rows)
-            /*for (row of rows){
-                c += JSON.stringify(row) ;	
-            }*/
-            console.log(data);
-            return JSON.parse(data)  
-        })
-  
-       /* let row
-        knex.from('products').select('*')
-        .then((rows)=> {
-            for (row of rows){
-                console.log(row);	
-            }
-        })
-        .catch((err)=>{ console.log(err);  throw err})
-        .finally(()=>{
-            knex.destroy()
-        })*/
-
- 
-        /*try {          
-            
-            let items 
-            knex.from('products').select('*')
-            .then((rows)=> {
-                items = rows;   
-                console.log(rows);         
-            })
-            .catch((err)=>{ console.log(err);  throw err})
-            .finally(()=>{
-                knex.destroy()
-            })
-            console.log(items);
-
-            data = JSON.parse(items)
-        } catch (err) {
-            data = 'Esta vacio'
-        }*/
-         
+    async  getAll() {
+        return await knex.from('products').select('*')
     }
+
+    
   
 }
 /*FIN CLASES*/

@@ -6,7 +6,7 @@ const { Server: Socket } = require('socket.io')
 const contenedor = require("./api/contenedor.js")
 const file = new contenedor()
 
-const contenedorMessages = require("./api_messages/contenedor.js")
+const contenedorMessages  = require("./api_messages/contenedor.js")
 const messages = new contenedorMessages()
 
 const PORT = 8080 || process.env.PORT;
@@ -45,19 +45,18 @@ function getAll(){
 io.on('connection', async socket => {
     console.log('Nueva conexion');
  
-    //const items = getAll()
-    //console.log(items);
-     
-    // socket.emit('productos',  getAll());
-   
+    file.getAll().then((res) => socket.emit('productos',res))
     
     socket.on('newItem', producto => {         
         file.save(producto.title,producto.price,producto.thumb)
         io.sockets.emit('productos', file.getAll());
+
+        file.getAll().then((res) =>   io.sockets.emit('productos', res) )
     })
 
-   // socket.emit('messages', await messages.getAll());
-
+    
+    messages.getAll().then((res) => socket.emit('messages',res))
+  
     //socket.emit('users',{ await messages.getAllUsers()});
  
     socket.on('newMessage', async mensaje => {
@@ -65,8 +64,11 @@ io.on('connection', async socket => {
         mensaje.socketId = socket.id
          
         await messages.save(mensaje)
-        io.sockets.emit('messages', await messages.getAll());   
+           
+        messages.getAll().then((res) => io.sockets.emit('messages', res) )
+
     }) 
+
 });
  
  
