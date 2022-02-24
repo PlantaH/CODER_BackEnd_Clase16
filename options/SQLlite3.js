@@ -1,4 +1,4 @@
-const options = {
+const optionsSQLite = {
     client: "sqlite3",
     connection: {
         filename: "./database/iDesafio16_DB.sqlite"
@@ -7,5 +7,5 @@ const options = {
 }
 
 module.exports ={
-    options
+    optionsSQLite
 }

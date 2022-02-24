@@ -7,7 +7,7 @@ const contenedor = require("./api/contenedor.js")
 const file = new contenedor()
 
 const contenedorMessages = require("./api_messages/contenedor.js")
-const messages = new contenedorMessages('./api_messages/messages.txt')
+const messages = new contenedorMessages()
 
 const PORT = 8080 || process.env.PORT;
 
@@ -56,17 +56,16 @@ io.on('connection', async socket => {
         io.sockets.emit('productos', file.getAll());
     })
 
-    socket.emit('messages', await messages.getAll());
+   // socket.emit('messages', await messages.getAll());
 
-    socket.emit('users', await messages.getAllUsers());
+    //socket.emit('users',{ await messages.getAllUsers()});
  
     socket.on('newMessage', async mensaje => {
         mensaje.fyh = new Date().toLocaleString()
         mensaje.socketId = socket.id
          
         await messages.save(mensaje)
-        io.sockets.emit('messages', await messages.getAll());        
-        io.sockets.emit('users', await messages.getAllUsers());
+        io.sockets.emit('messages', await messages.getAll());   
     }) 
 });
  
