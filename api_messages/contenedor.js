@@ -15,19 +15,18 @@ class contenedor {
 
         knex('messages').insert(obj)
             .then(()=> console.log('datos insertados'))
-            .catch((err)=>{ console.log(err);  throw err})
-            .finally(()=>{
-               // knex.destroy()
-          })            
-  
-        let data = 'ok'
-        
-        return data  
+            .catch((err)=>{ console.log(err);  throw err})                    
+                
+        return 'ok'
  
     }
 
+    close() {
+        return this.knex.destroy();
+    }
+   
+
 }
- 
-    
+   
 
 module.exports =  contenedor

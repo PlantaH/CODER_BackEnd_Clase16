@@ -19,29 +19,8 @@ app.use(express.static('public'))
 
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
-
-const { options } = require('./options/mariaDB.js')
-const knex = require('knex')(options)
-
-function getAll(){
-    try {
-        let data = []
-        let row
-        knex.from('products').select('*')
-        .then((rows)=> {
-            data = JSON.stringify(rows)                
-            return JSON.parse(data)  
-        }) 
-        .catch((err)=>{ console.log(err);  throw err})
-        .finally(()=>{
-            knex.destroy()
-        })
-    } catch (error) {
-        return []
-    }
-
-}
  
+  
 io.on('connection', async socket => {
     console.log('Nueva conexion');
  
@@ -56,8 +35,7 @@ io.on('connection', async socket => {
 
     
     messages.getAll().then((res) => socket.emit('messages',res))
-  
-    //socket.emit('users',{ await messages.getAllUsers()});
+   
  
     socket.on('newMessage', async mensaje => {
         mensaje.fyh = new Date().toLocaleString()
